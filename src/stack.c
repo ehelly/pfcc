@@ -63,12 +63,12 @@ int stack_fac(Stack *stack) {
     int i;
     double val = floor(stack_pop(stack)), sum = 1;
 
-    if(val < 0) {
+    if (val < 0) {
         stack_push(stack, NAN);
         return 0;
     }
 
     /* slow, naive implementation */
-    for(i = 1; i < val; sum *= ++i);
+    for (i = 1; i < val; sum *= ++i) continue;
     return stack_push(stack, sum);
 }
