@@ -39,4 +39,6 @@ int stack_sub(Stack *stack);
 int stack_mul(Stack *stack);
 int stack_div(Stack *stack);
 
+int stack_fac(Stack *stack);
+
 #endif

@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <math.h>
+
 #include "stack.h"
 
 int stack_push(Stack *stack, double val) {
@@ -55,4 +57,18 @@ int stack_mul(Stack *stack) {
 int stack_div(Stack *stack) {
     double a = stack_pop(stack), b = stack_pop(stack);
     return stack_push(stack, b / a);
+}
+
+int stack_fac(Stack *stack) {
+    int i;
+    double val = floor(stack_pop(stack)), sum = 1;
+
+    if(val < 0) {
+        stack_push(stack, NAN);
+        return 0;
+    }
+
+    /* slow, naive implementation */
+    for(i = 1; i < val; sum *= ++i);
+    return stack_push(stack, sum);
 }
