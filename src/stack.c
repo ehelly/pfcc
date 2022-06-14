@@ -45,3 +45,12 @@ int stack_add(Stack *stack) {
 int stack_sub(Stack *stack) {
     return stack_push(stack, stack_pop(stack) + stack_pop(stack));
 }
+
+int stack_mul(Stack *stack) {
+    return stack_push(stack, stack_pop(stack) * stack_pop(stack));
+}
+
+int stack_div(Stack *stack) {
+    double a = stack_pop(stack), b = stack_pop(stack);
+    return stack_push(stack, b / a);
+}

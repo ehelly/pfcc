@@ -31,6 +31,7 @@ int main() {
         size_t len;
         short i, stackLen;
 
+        /* TODO: use scanf to allow multiple args, unknown command processing */
         if (getline(&input, &len, stdin) == -1) return -1;
         input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
         if (strcmp(input, "q") == 0) {
@@ -39,7 +40,12 @@ int main() {
             if (stack_add(&stack) == -1) return -1;
         } else if (strcmp(input, "-") == 0) {
             if (stack_sub(&stack) == -1) return -1;
-        } else {
+        } else if (strcmp(input, "*") == 0) {
+            if (stack_mul(&stack) == -1) return -1;
+        } else if (strcmp(input, "/") == 0) {
+            if (stack_div(&stack) == -1) return -1;
+        }
+        else {
             stack_push(&stack, atof(input));
         }
         free(input);

@@ -27,7 +27,6 @@ typedef struct Stack {
 } Stack;
 
 int stack_push(Stack *stack, double val);
-
 double stack_pop(Stack *stack);
 
 double stack_read(Stack *stack);
@@ -35,7 +34,8 @@ double stack_read(Stack *stack);
 short stack_len(Stack *stack);
 
 int stack_add(Stack *stack);
-
 int stack_sub(Stack *stack);
+int stack_mul(Stack *stack);
+int stack_div(Stack *stack);
 
 #endif
