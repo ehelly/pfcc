@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <math.h>
-
 #include "stack.h"
+
+#include <math.h>
 
 int stack_push(Stack *stack, double val) {
     if (stack->index == MAX_SIZE - 1) return -1;
@@ -33,9 +33,9 @@ double stack_pop(Stack *stack) {
         return stack->array[stack->index--];
 }
 
-double stack_read(Stack *stack) {
-    if (stack->index < 0) return 0.0;
-    return stack->array[stack->index];
+double stack_get(Stack *stack, short i) {
+    if (stack->index < i) return 0.0;
+    return stack->array[i];
 }
 
 short stack_len(Stack *stack) { return stack->index + 1; }

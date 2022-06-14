@@ -71,15 +71,14 @@ int main() {
         }
         free(input);
 
-        stackLen = stack_len(&stack);
 #ifdef SYSTEM_CLEAR
         system("clear||cls");
 #endif
         if (showWarranty) {
             warranty();
         } else {
-            for (i = 0; i < stackLen; i++) {
-                printf("%d: %f\n", stackLen - i, stack.array[i]);
+            for (i = 0; i < stack_len(&stack); i++) {
+                printf("%d: %f\n", i, stack_get(&stack, i));
             }
         }
     }

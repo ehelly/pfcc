@@ -29,7 +29,7 @@ typedef struct Stack {
 int stack_push(Stack *stack, double val);
 double stack_pop(Stack *stack);
 
-double stack_read(Stack *stack);
+double stack_get(Stack *stack, short i);
 
 short stack_len(Stack *stack);
 void stack_clear(Stack *stack);
