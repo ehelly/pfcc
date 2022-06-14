@@ -22,14 +22,24 @@
 
 #include "stack.h"
 
+void warranty();
+
 int main() {
     Stack stack;
     stack.index = -1;
 
+    printf(
+        "pfcc Copyright (C) 2022 Eleanor Helly\n"
+        "This is free software; see the source code for copying conditions. "
+        "There is\n"
+        "ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A "
+        "PARTICULAR\n"
+        "PURPOSE. For details, type `warranty` and press return/enter.\n");
+
     while (1) {
         char *input = NULL;
         size_t len;
-        short i, stackLen;
+        short i, stackLen, showWarranty = 0;
 
         /* TODO: use scanf to allow multiple args, unknown command processing */
         if (getline(&input, &len, stdin) == -1) return -1;
@@ -44,18 +54,42 @@ int main() {
             if (stack_mul(&stack) == -1) return -1;
         } else if (strcmp(input, "/") == 0) {
             if (stack_div(&stack) == -1) return -1;
-        }
-        else {
+        } else if (strcmp(input, "warranty") == 0) {
+            showWarranty = 1;
+        } else {
             stack_push(&stack, atof(input));
         }
         free(input);
 
         stackLen = stack_len(&stack);
-        #ifdef SYSTEM_CLEAR
+#ifdef SYSTEM_CLEAR
         system("clear||cls");
-        #endif
-        for (i = 0; i < stackLen; i++) {
-            printf("%d: %f\n", stackLen - i, stack.array[i]);
+#endif
+        if (showWarranty) {
+            warranty();
+        } else {
+            for (i = 0; i < stackLen; i++) {
+                printf("%d: %f\n", stackLen - i, stack.array[i]);
+            }
         }
     }
+}
+
+void warranty() {
+    printf(
+        "THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY\n"
+        "APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE "
+        "COPYRIGHT\n"
+        "HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM \"AS IS\" WITHOUT "
+        "WARRANTY\n"
+        "OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED "
+        "TO,\n");
+    printf(
+        "THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A "
+        "PARTICULAR\n"
+        "PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE "
+        "PROGRAM\n"
+        "IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST "
+        "OF\n"
+        "ALL NECESSARY SERVICING, REPAIR OR CORRECTION.\n");
 }
