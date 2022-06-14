@@ -38,6 +38,8 @@ double stack_read(Stack *stack) {
 
 short stack_len(Stack *stack) { return stack->index + 1; }
 
+void stack_clear(Stack *stack) { stack->index = -1; }
+
 int stack_add(Stack *stack) {
     return stack_push(stack, stack_pop(stack) + stack_pop(stack));
 }

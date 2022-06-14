@@ -32,6 +32,7 @@ double stack_pop(Stack *stack);
 double stack_read(Stack *stack);
 
 short stack_len(Stack *stack);
+void stack_clear(Stack *stack);
 
 int stack_add(Stack *stack);
 int stack_sub(Stack *stack);

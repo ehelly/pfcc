@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +28,10 @@ void warranty();
 int main() {
     Stack stack;
     stack.index = -1;
+
+#ifdef SYSTEM_CLEAR
+    system("clear||cls");
+#endif
 
     printf(
         "pfcc Copyright (C) 2022 Eleanor Helly\n"
@@ -44,6 +49,7 @@ int main() {
         /* TODO: use scanf to allow multiple args, unknown command processing */
         if (getline(&input, &len, stdin) == -1) return -1;
         input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
+        for (i = 0; input[i]; i++) input[i] = tolower(input[i]);
         if (strcmp(input, "q") == 0) {
             return 0;
         } else if (strcmp(input, "+") == 0) {
@@ -56,6 +62,8 @@ int main() {
             if (stack_div(&stack) == -1) return -1;
         } else if (strcmp(input, "warranty") == 0) {
             showWarranty = 1;
+        } else if (strcmp(input, "clear") == 0) {
+            stack_clear(&stack);
         } else {
             stack_push(&stack, atof(input));
         }
