@@ -59,6 +59,11 @@ int stack_div(Stack *stack) {
     return stack_push(stack, b / a);
 }
 
+int stack_pow(Stack *stack) {
+    double a = stack_pop(stack), b = stack_pop(stack);
+    return stack_push(stack, pow(b, a));
+}
+
 int stack_fac(Stack *stack) {
     int i;
     double val = floor(stack_pop(stack)), sum = 1;
