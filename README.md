@@ -1,6 +1,6 @@
 # pfcc
 
-CLI postfix calculator written in portable, ANSI C.
+CLI postfix calculator written in portable, C89.
 
 ## Compiling
 

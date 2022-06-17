@@ -71,6 +71,10 @@ int main() {
             continue;
         } else if (strcmp(input, "clear") == 0) {
             stack_clear(&stack);
+        } else if (strcmp(input, "rev") == 0) {
+            stack_rev(&stack);
+        } else if (strlen(input) == 0) {
+            stack_push(&stack, stack_get(&stack, stack.len - 1));
         } else {
             stack_push(&stack, atof(input));
         }

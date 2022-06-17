@@ -74,6 +74,15 @@ int stack_fac(Stack *stack) {
     return stack_push(stack, sum);
 }
 
+void stack_rev(Stack *stack) {
+    unsigned char i = 0, j = stack->len - 1, half_len = stack->len / 2;
+    for (; i < half_len; i++, j--) {
+        double temp = stack->array[i];
+        stack->array[i] = stack->array[j];
+        stack->array[j] = temp;
+    }
+}
+
 /* -1 => a < b, 0 => a = b, 1 => a > b */
 static int ord(const void *va, const void *vb) {
     double a = *(const double *)va, b = *(const double *)vb;

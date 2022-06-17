@@ -41,6 +41,7 @@ int stack_div(Stack *stack);
 int stack_pow(Stack *stack);
 
 int stack_fac(Stack *stack);
+void stack_rev(Stack *stack);
 
 void stack_sort(Stack *stack);
 /* void _quicksort(double array[], short lo, short hi);
