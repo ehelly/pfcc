@@ -44,7 +44,7 @@ int main() {
     while (1) {
         char *input = NULL;
         size_t len;
-        short i, stackLen, showWarranty = 0;
+        short i;
 
         /* TODO: use scanf to allow multiple args, unknown command processing */
         if (getline(&input, &len, stdin) == -1) return -1;
@@ -67,7 +67,8 @@ int main() {
         } else if (strcmp(input, "sort") == 0) {
             stack_sort(&stack);
         } else if (strcmp(input, "warranty") == 0) {
-            showWarranty = 1;
+            warranty();
+            continue;
         } else if (strcmp(input, "clear") == 0) {
             stack_clear(&stack);
         } else {
@@ -78,12 +79,8 @@ int main() {
 #ifdef SYSTEM_CLEAR
         system("clear||cls");
 #endif
-        if (showWarranty) {
-            warranty();
-        } else {
-            for (i = 0; i < stack_len(&stack); i++) {
-                printf("%d: %f\n", i, stack_get(&stack, i));
-            }
+        for (i = 0; i < stack_len(&stack); i++) {
+            printf("%d: %f\n", i, stack_get(&stack, i));
         }
     }
 }
