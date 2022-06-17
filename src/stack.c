@@ -19,6 +19,7 @@
 #include "stack.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 int stack_push(Stack *stack, double val) {
     if (stack->len == MAX_SIZE) return -1;
@@ -64,7 +65,7 @@ int stack_fac(Stack *stack) {
     double val = floor(stack_pop(stack)), sum = 1;
 
     if (val < 0) {
-        stack_push(stack, (double)NAN);
+        stack_push(stack, 0. / 0.);
         return 0;
     }
 
@@ -73,35 +74,18 @@ int stack_fac(Stack *stack) {
     return stack_push(stack, sum);
 }
 
-static unsigned char partition(double array[], unsigned char low,
-                               unsigned char high) {
-    double pivot = array[(low + high) / 2];
-
-    while (1) {
-        double tmp;
-
-        for (; array[low] < pivot; low++) continue;
-
-        for (; array[high] > pivot; high--) continue;
-
-        if (low >= high) return high;
-
-        /* swap */
-        tmp = array[low];
-        array[low] = array[high];
-        array[high] = tmp;
-    }
-}
-
-static void quicksort(double array[], unsigned char low, unsigned char high) {
-    if (low < high) {
-        unsigned char p = partition(array, low, high);
-        quicksort(array, low, p);
-        quicksort(array, p + 1, high);
-    }
+/* -1 => a < b, 0 => a = b, 1 => a > b */
+static int ord(const void *va, const void *vb) {
+    double a = *(const double *)va, b = *(const double *)vb;
+    if (a != a)
+        return (b != b) ? 0 : 1;
+    else if (b != b || a < b)
+        return -1;
+    else if (a > b)
+        return 1;
+    return 0;
 }
 
 void stack_sort(Stack *stack) {
-    if (stack->len == 0) return;
-    quicksort(stack->array, 0, stack->len - 1);
+    qsort(stack->array, stack->len, sizeof(double), ord);
 }
