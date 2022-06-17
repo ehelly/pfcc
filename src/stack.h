@@ -42,4 +42,8 @@ int stack_pow(Stack *stack);
 
 int stack_fac(Stack *stack);
 
+void stack_sort(Stack *stack);
+void _quicksort(double array[], short lo, short hi);
+short _partition(double array[], short lo, short hi);
+
 #endif

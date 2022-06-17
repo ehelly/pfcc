@@ -64,6 +64,7 @@ int stack_pow(Stack *stack) {
     return stack_push(stack, pow(b, a));
 }
 
+/* TODO: use gamma function instead */
 int stack_fac(Stack *stack) {
     int i;
     double val = floor(stack_pop(stack)), sum = 1;
@@ -76,4 +77,33 @@ int stack_fac(Stack *stack) {
     /* slow, naive implementation */
     for (i = 1; i < val; sum *= ++i) continue;
     return stack_push(stack, sum);
+}
+
+void stack_sort(Stack *stack) { _quicksort(stack->array, 0, stack->index); }
+
+void _quicksort(double array[], short low, short high) {
+    if (low >= 0 && high >= 0 && low < high) {
+        short p = _partition(array, low, high);
+        _quicksort(array, low, p);
+        _quicksort(array, p + 1, high);
+    }
+}
+
+short _partition(double array[], short low, short high) {
+    short pivot = array[(low + high) / 2];
+
+    while (1) {
+        double tmp;
+
+        for (; array[low] < pivot; low++) continue;
+
+        for (; array[high] > pivot; high--) continue;
+
+        if (low >= high) return high;
+
+        /* swap */
+        tmp = array[low];
+        array[low] = array[high];
+        array[high] = tmp;
+    }
 }

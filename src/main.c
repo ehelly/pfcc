@@ -64,6 +64,8 @@ int main() {
             if (stack_pow(&stack) == -1) return -1;
         } else if (strcmp(input, "!") == 0) {
             stack_fac(&stack);
+        } else if (strcmp(input, "sort") == 0) {
+            stack_sort(&stack);
         } else if (strcmp(input, "warranty") == 0) {
             showWarranty = 1;
         } else if (strcmp(input, "clear") == 0) {
