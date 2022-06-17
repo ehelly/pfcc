@@ -73,6 +73,8 @@ int main() {
             stack_clear(&stack);
         } else if (strcmp(input, "rev") == 0) {
             stack_rev(&stack);
+        } else if (strcmp(input, "drop") == 0) {
+            if (stack.len > 0) stack.len--;
         } else if (strlen(input) == 0) {
             stack_push(&stack, stack_get(&stack, stack.len - 1));
         } else {
