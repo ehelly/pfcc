@@ -23,11 +23,11 @@
 
 #include "stack.h"
 
-void warranty();
+void warranty(void);
 
 int main() {
     Stack stack;
-    stack.index = -1;
+    stack.len = 0;
 
 #ifdef SYSTEM_CLEAR
     system("clear||cls");
@@ -44,12 +44,12 @@ int main() {
     while (1) {
         char *input = NULL;
         size_t len;
-        short i;
+        unsigned char i;
 
         /* TODO: use scanf to allow multiple args, unknown command processing */
         if (getline(&input, &len, stdin) == -1) return -1;
         input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
-        for (i = 0; input[i]; i++) input[i] = tolower(input[i]);
+        for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
         if (strcmp(input, "q") == 0) {
             return 0;
         } else if (strcmp(input, "+") == 0) {
@@ -79,7 +79,7 @@ int main() {
 #ifdef SYSTEM_CLEAR
         system("clear||cls");
 #endif
-        for (i = 0; i < stack_len(&stack); i++) {
+        for (i = 0; i < stack.len; i++) {
             printf("%d: %f\n", i, stack_get(&stack, i));
         }
     }

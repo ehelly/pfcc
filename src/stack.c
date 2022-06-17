@@ -21,33 +21,27 @@
 #include <math.h>
 
 int stack_push(Stack *stack, double val) {
-    if (stack->index == MAX_SIZE - 1) return -1;
-    stack->array[++stack->index] = val;
+    if (stack->len == MAX_SIZE) return -1;
+    stack->array[stack->len++] = val;
     return 0;
 }
 
 double stack_pop(Stack *stack) {
-    if (stack->index < 0)
-        return 0.0;
-    else
-        return stack->array[stack->index--];
+    return (!stack->len) ? 0.0 : stack->array[--stack->len];
 }
 
-double stack_get(Stack *stack, short i) {
-    if (stack->index < i) return 0.0;
-    return stack->array[i];
+double stack_get(Stack *stack, unsigned char i) {
+    return (i >= stack->len) ? 0.0 : stack->array[i];
 }
 
-short stack_len(Stack *stack) { return stack->index + 1; }
-
-void stack_clear(Stack *stack) { stack->index = -1; }
+void stack_clear(Stack *stack) { stack->len = 0; }
 
 int stack_add(Stack *stack) {
     return stack_push(stack, stack_pop(stack) + stack_pop(stack));
 }
 
 int stack_sub(Stack *stack) {
-    return stack_push(stack, stack_pop(stack) + stack_pop(stack));
+    return stack_push(stack, -stack_pop(stack) + stack_pop(stack));
 }
 
 int stack_mul(Stack *stack) {
@@ -70,7 +64,7 @@ int stack_fac(Stack *stack) {
     double val = floor(stack_pop(stack)), sum = 1;
 
     if (val < 0) {
-        stack_push(stack, NAN);
+        stack_push(stack, (double)NAN);
         return 0;
     }
 
@@ -79,18 +73,9 @@ int stack_fac(Stack *stack) {
     return stack_push(stack, sum);
 }
 
-void stack_sort(Stack *stack) { _quicksort(stack->array, 0, stack->index); }
-
-void _quicksort(double array[], short low, short high) {
-    if (low >= 0 && high >= 0 && low < high) {
-        short p = _partition(array, low, high);
-        _quicksort(array, low, p);
-        _quicksort(array, p + 1, high);
-    }
-}
-
-short _partition(double array[], short low, short high) {
-    short pivot = array[(low + high) / 2];
+static unsigned char partition(double array[], unsigned char low,
+                               unsigned char high) {
+    double pivot = array[(low + high) / 2];
 
     while (1) {
         double tmp;
@@ -106,4 +91,17 @@ short _partition(double array[], short low, short high) {
         array[low] = array[high];
         array[high] = tmp;
     }
+}
+
+static void quicksort(double array[], unsigned char low, unsigned char high) {
+    if (low < high) {
+        unsigned char p = partition(array, low, high);
+        quicksort(array, low, p);
+        quicksort(array, p + 1, high);
+    }
+}
+
+void stack_sort(Stack *stack) {
+    if (stack->len == 0) return;
+    quicksort(stack->array, 0, stack->len - 1);
 }

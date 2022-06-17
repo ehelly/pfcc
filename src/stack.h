@@ -21,17 +21,17 @@
 
 #define MAX_SIZE 255
 
+#pragma GCC diagnostic ignored "-Wpadded"
 typedef struct Stack {
     double array[MAX_SIZE];
-    short index;
+    unsigned char len;
 } Stack;
 
 int stack_push(Stack *stack, double val);
 double stack_pop(Stack *stack);
 
-double stack_get(Stack *stack, short i);
+double stack_get(Stack *stack, unsigned char i);
 
-short stack_len(Stack *stack);
 void stack_clear(Stack *stack);
 
 int stack_add(Stack *stack);
@@ -43,7 +43,7 @@ int stack_pow(Stack *stack);
 int stack_fac(Stack *stack);
 
 void stack_sort(Stack *stack);
-void _quicksort(double array[], short lo, short hi);
-short _partition(double array[], short lo, short hi);
+/* void _quicksort(double array[], short lo, short hi);
+short _partition(double array[], short lo, short hi); */
 
 #endif
