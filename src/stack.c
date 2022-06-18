@@ -28,11 +28,11 @@ int stack_push(Stack *stack, double val) {
 }
 
 double stack_pop(Stack *stack) {
-    return (!stack->len) ? 0.0 : stack->array[--stack->len];
+    return stack->len ? stack->array[--stack->len] : 0.0;
 }
 
 double stack_get(Stack *stack, unsigned char i) {
-    return (i >= stack->len) ? 0.0 : stack->array[i];
+    return i < stack->len ? stack->array[i] : 0.0;
 }
 
 void stack_clear(Stack *stack) { stack->len = 0; }
@@ -75,19 +75,19 @@ int stack_fac(Stack *stack) {
 }
 
 void stack_rev(Stack *stack) {
-    unsigned char i = 0, j = stack->len - 1, half_len = stack->len / 2;
-    for (; i < half_len; i++, j--) {
+    unsigned char i = 0, j = stack->len - 1;
+    for (; i < stack->len / 2; i++, j--) {
         double temp = stack->array[i];
         stack->array[i] = stack->array[j];
         stack->array[j] = temp;
     }
 }
 
-/* -1 => a < b, 0 => a = b, 1 => a > b */
+/* for order, IEEE 754 compliance is assumed and any value < NAN = NAN */
 static int ord(const void *va, const void *vb) {
     double a = *(const double *)va, b = *(const double *)vb;
-    if (a != a)
-        return (b != b) ? 0 : 1;
+    if (a != a) /* is a NAN? */
+        return b != b ? 0 : 1;
     else if (b != b || a < b)
         return -1;
     else if (a > b)
