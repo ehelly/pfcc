@@ -19,13 +19,17 @@
 #ifndef STACK_H
 #define STACK_H
 
+#ifndef MAX_SIZE
 #define MAX_SIZE 255
+#endif
 
 #pragma GCC diagnostic ignored "-Wpadded"
 typedef struct Stack {
-    double array[MAX_SIZE];
+    double *array;
     unsigned char len;
 } Stack;
+
+int stack_init(Stack *stack);
 
 int stack_push(Stack *stack, double val);
 double stack_pop(Stack *stack);

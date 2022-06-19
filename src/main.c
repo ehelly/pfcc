@@ -27,7 +27,7 @@ void warranty(void);
 
 int main() {
     Stack stack;
-    stack.len = 0;
+    stack_init(&stack);
 
 #ifdef SYSTEM_CLEAR
     system("clear||cls");

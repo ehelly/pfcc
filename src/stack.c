@@ -21,6 +21,16 @@
 #include <math.h>
 #include <stdlib.h>
 
+int stack_init(Stack *stack) {
+    double *ptr = (double *)malloc(sizeof(double) * MAX_SIZE);
+    if (ptr != NULL) {
+        stack->array = ptr;
+        stack->len = 0;
+        return 1;
+    } else
+        return 0;
+}
+
 int stack_push(Stack *stack, double val) {
     if (stack->len == MAX_SIZE) return -1;
     stack->array[stack->len++] = val;
