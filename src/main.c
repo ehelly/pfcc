@@ -27,7 +27,7 @@ void warranty(void);
 
 int main() {
     Stack stack;
-    stack_init(&stack);
+    if (stack_init(&stack) != 0) return 1;
 
 #ifdef SYSTEM_CLEAR
     system("clear||cls");
@@ -47,21 +47,21 @@ int main() {
         unsigned char i;
 
         /* TODO: use scanf to allow multiple args, unknown command processing */
-        if (getline(&input, &len, stdin) == -1) return -1;
+        if (getline(&input, &len, stdin) == -1) return 1;
         input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
         for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
         if (strcmp(input, "q") == 0) {
             return 0;
         } else if (strcmp(input, "+") == 0) {
-            if (stack_add(&stack) == -1) return -1;
+            if (stack_add(&stack) == -1) return 1;
         } else if (strcmp(input, "-") == 0) {
-            if (stack_sub(&stack) == -1) return -1;
+            if (stack_sub(&stack) == -1) return 1;
         } else if (strcmp(input, "*") == 0) {
-            if (stack_mul(&stack) == -1) return -1;
+            if (stack_mul(&stack) == -1) return 1;
         } else if (strcmp(input, "/") == 0) {
-            if (stack_div(&stack) == -1) return -1;
+            if (stack_div(&stack) == -1) return 1;
         } else if (strcmp(input, "pow") == 0) {
-            if (stack_pow(&stack) == -1) return -1;
+            if (stack_pow(&stack) == -1) return 1;
         } else if (strcmp(input, "!") == 0) {
             stack_fac(&stack);
         } else if (strcmp(input, "sort") == 0) {

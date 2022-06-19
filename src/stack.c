@@ -32,7 +32,7 @@ int stack_init(Stack *stack) {
 }
 
 int stack_push(Stack *stack, double val) {
-    if (stack->len == MAX_SIZE) return -1;
+    if (stack->len == MAX_SIZE) return 1;
     stack->array[stack->len++] = val;
     return 0;
 }
