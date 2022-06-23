@@ -19,7 +19,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#ifndef MAX_SIZE
+#if !defined(MAX_SIZE) || MAX_SIZE > 255
 #define MAX_SIZE 255
 #endif
 
@@ -54,7 +54,5 @@ int stack_fac(Stack *stack);
 void stack_rev(Stack *stack);
 
 void stack_sort(Stack *stack);
-/* void _quicksort(double array[], short lo, short hi);
-short _partition(double array[], short lo, short hi); */
 
 #endif
