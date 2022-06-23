@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef SYSTEM_CLEAR
+#define clear() system("clear||cls")
+#else
+#define clear()
+#endif
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,19 +29,13 @@
 
 #include "stack.h"
 
-#ifdef SYSTEM_CLEAR
-#define clear() system("clear||cls")
-#else
-#define clear()
-#endif
-
 void warranty(void);
 
 int process(Stack *stack, char *input);
 
 int main() {
     Stack stack;
-    if (stack_init(&stack) != 0) return 1;
+    if (stack_init(&stack)) return 1;
 
     clear();
 
@@ -57,11 +57,10 @@ int main() {
         input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
         for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
 
-        if (strcmp(input, "warranty") == 0) {
-            warranty();
+        if (!strcmp(input, "warranty")) {
             free(input);
-            continue;
-        } else if (process(&stack, input) == 1) {
+            warranty();
+        } else if (process(&stack, input)) {
             return 1;
         } else {
             free(input);
@@ -74,29 +73,29 @@ int main() {
 }
 
 int process(Stack *stack, char *input) {
-    if (strcmp(input, "q") == 0) {
+    if (!strcmp(input, "q")) {
         exit(0);
-    } else if (strcmp(input, "+") == 0) {
-        if (stack_add(stack) == 1) return 1;
-    } else if (strcmp(input, "-") == 0) {
-        if (stack_sub(stack) == 1) return 1;
-    } else if (strcmp(input, "*") == 0) {
-        if (stack_mul(stack) == 1) return 1;
-    } else if (strcmp(input, "/") == 0) {
-        if (stack_div(stack) == 1) return 1;
-    } else if (strcmp(input, "pow") == 0) {
-        if (stack_pow(stack) == 1) return 1;
-    } else if (strcmp(input, "!") == 0) {
-        if (stack_fac(stack) == 1) return 1;
-    } else if (strcmp(input, "sort") == 0) {
+    } else if (!strcmp(input, "+")) {
+        if (stack_add(stack)) return 1;
+    } else if (!strcmp(input, "-")) {
+        if (stack_sub(stack)) return 1;
+    } else if (!strcmp(input, "*")) {
+        if (stack_mul(stack)) return 1;
+    } else if (!strcmp(input, "/")) {
+        if (stack_div(stack)) return 1;
+    } else if (!strcmp(input, "pow")) {
+        if (stack_pow(stack)) return 1;
+    } else if (!strcmp(input, "!")) {
+        if (stack_fac(stack)) return 1;
+    } else if (!strcmp(input, "sort")) {
         stack_sort(stack);
-    } else if (strcmp(input, "clear") == 0) {
+    } else if (!strcmp(input, "clear")) {
         stack_clear(stack);
-    } else if (strcmp(input, "rev") == 0) {
+    } else if (!strcmp(input, "rev")) {
         stack_rev(stack);
-    } else if (strcmp(input, "drop") == 0) {
+    } else if (!strcmp(input, "drop")) {
         if (stack->len > 0) stack->len--;
-    } else if (strlen(input) == 0) {
+    } else if (!strlen(input)) {
         stack_push(stack, stack_get(stack, stack->len - 1));
     } else {
         stack_push(stack, atof(input));
