@@ -63,7 +63,7 @@ int main() {
         } else if (strcmp(input, "pow") == 0) {
             if (stack_pow(&stack) == 1) return 1;
         } else if (strcmp(input, "!") == 0) {
-            stack_fac(&stack);
+            if (stack_fac(&stack) == 1) return 1;
         } else if (strcmp(input, "sort") == 0) {
             stack_sort(&stack);
         } else if (strcmp(input, "warranty") == 0) {
