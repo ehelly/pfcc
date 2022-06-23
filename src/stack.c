@@ -73,6 +73,12 @@ int stack_pow(Stack *stack) {
 #endif
 }
 
+int stack_neg(Stack *stack) {
+    TYPE val = stack_pop(stack);
+    /* -0 workaround */
+    return stack_push(stack, -(val != 0.0f) * val);
+}
+
 /* TODO: use gamma function instead */
 int stack_fac(Stack *stack) {
     int i;

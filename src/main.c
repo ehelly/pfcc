@@ -66,7 +66,7 @@ int main() {
             free(input);
             clear();
             for (i = 0; i < stack.len; i++) {
-                printf("%d: %f\n", i, (double)stack_get(&stack, i));
+                printf("%d: %g\n", i, (double)stack_get(&stack, i));
             }
         }
     }
@@ -85,6 +85,8 @@ int process(Stack *stack, char *input) {
         if (stack_div(stack)) return 1;
     } else if (!strcmp(input, "pow")) {
         if (stack_pow(stack)) return 1;
+    } else if (!strcmp(input, "neg")) {
+        if (stack_neg(stack)) return 1;
     } else if (!strcmp(input, "!")) {
         if (stack_fac(stack)) return 1;
     } else if (!strcmp(input, "sort")) {

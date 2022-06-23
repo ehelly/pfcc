@@ -50,6 +50,8 @@ int stack_mul(Stack *stack);
 int stack_div(Stack *stack);
 int stack_pow(Stack *stack);
 
+int stack_neg(Stack *stack);
+
 int stack_fac(Stack *stack);
 void stack_rev(Stack *stack);
 
