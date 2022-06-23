@@ -73,6 +73,14 @@ int stack_pow(Stack *stack) {
 #endif
 }
 
+int stack_sqrt(Stack *stack) {
+#ifdef USE_FLOAT
+    return stack_push(stack, sqrtf(stack_pop(stack)));
+#else
+    return stack_push(stack, sqrt(stack_pop(stack)));
+#endif
+}
+
 int stack_neg(Stack *stack) {
     TYPE val = stack_pop(stack);
     /* -0 workaround */
