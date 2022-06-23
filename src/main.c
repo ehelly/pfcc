@@ -23,15 +23,21 @@
 
 #include "stack.h"
 
+#ifdef SYSTEM_CLEAR
+#define clear() system("clear||cls")
+#else
+#define clear()
+#endif
+
 void warranty(void);
+
+int process(Stack *stack, char *input);
 
 int main() {
     Stack stack;
     if (stack_init(&stack) != 0) return 1;
 
-#ifdef SYSTEM_CLEAR
-    system("clear||cls");
-#endif
+    clear();
 
     printf(
         "pfcc Copyright (C) 2022 Eleanor Helly\n"
@@ -50,46 +56,52 @@ int main() {
         if (getline(&input, &len, stdin) == -1) return 1;
         input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
         for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
-        if (strcmp(input, "q") == 0) {
-            return 0;
-        } else if (strcmp(input, "+") == 0) {
-            if (stack_add(&stack) == 1) return 1;
-        } else if (strcmp(input, "-") == 0) {
-            if (stack_sub(&stack) == 1) return 1;
-        } else if (strcmp(input, "*") == 0) {
-            if (stack_mul(&stack) == 1) return 1;
-        } else if (strcmp(input, "/") == 0) {
-            if (stack_div(&stack) == 1) return 1;
-        } else if (strcmp(input, "pow") == 0) {
-            if (stack_pow(&stack) == 1) return 1;
-        } else if (strcmp(input, "!") == 0) {
-            if (stack_fac(&stack) == 1) return 1;
-        } else if (strcmp(input, "sort") == 0) {
-            stack_sort(&stack);
-        } else if (strcmp(input, "warranty") == 0) {
+
+        if (strcmp(input, "warranty") == 0) {
             warranty();
             free(input);
             continue;
-        } else if (strcmp(input, "clear") == 0) {
-            stack_clear(&stack);
-        } else if (strcmp(input, "rev") == 0) {
-            stack_rev(&stack);
-        } else if (strcmp(input, "drop") == 0) {
-            if (stack.len > 0) stack.len--;
-        } else if (strlen(input) == 0) {
-            stack_push(&stack, stack_get(&stack, stack.len - 1));
+        } else if (process(&stack, input) == 1) {
+            return 1;
         } else {
-            stack_push(&stack, atof(input));
-        }
-        free(input);
-
-#ifdef SYSTEM_CLEAR
-        system("clear||cls");
-#endif
-        for (i = 0; i < stack.len; i++) {
-            printf("%d: %f\n", i, stack_get(&stack, i));
+            free(input);
+            clear();
+            for (i = 0; i < stack.len; i++) {
+                printf("%d: %f\n", i, stack_get(&stack, i));
+            }
         }
     }
+}
+
+int process(Stack *stack, char *input) {
+    if (strcmp(input, "q") == 0) {
+        exit(0);
+    } else if (strcmp(input, "+") == 0) {
+        if (stack_add(stack) == 1) return 1;
+    } else if (strcmp(input, "-") == 0) {
+        if (stack_sub(stack) == 1) return 1;
+    } else if (strcmp(input, "*") == 0) {
+        if (stack_mul(stack) == 1) return 1;
+    } else if (strcmp(input, "/") == 0) {
+        if (stack_div(stack) == 1) return 1;
+    } else if (strcmp(input, "pow") == 0) {
+        if (stack_pow(stack) == 1) return 1;
+    } else if (strcmp(input, "!") == 0) {
+        if (stack_fac(stack) == 1) return 1;
+    } else if (strcmp(input, "sort") == 0) {
+        stack_sort(stack);
+    } else if (strcmp(input, "clear") == 0) {
+        stack_clear(stack);
+    } else if (strcmp(input, "rev") == 0) {
+        stack_rev(stack);
+    } else if (strcmp(input, "drop") == 0) {
+        if (stack->len > 0) stack->len--;
+    } else if (strlen(input) == 0) {
+        stack_push(stack, stack_get(stack, stack->len - 1));
+    } else {
+        stack_push(stack, atof(input));
+    }
+    return 0;
 }
 
 void warranty() {
