@@ -16,13 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef USE_FLOAT
+#define floor_t(x) floorf(x)
+#define pow_t(x, y) powf(x, y)
+#define sqrt_t(x) sqrtf(x)
+#else
+#define floor_t(x) floor(x)
+#define pow_t(x, y) pow(x, y)
+#define sqrt_t(x) sqrt(x)
+#endif
+
 #include "stack.h"
 
 #include <math.h>
 #include <stdlib.h>
 
 int stack_init(Stack *stack) {
-    TYPE *ptr = (TYPE *)malloc(sizeof(TYPE) * MAX_SIZE);
+    Float *ptr = (Float *)malloc(sizeof(Float) * MAX_SIZE);
     if (ptr != NULL) {
         stack->array = ptr;
         stack->len = 0;
@@ -31,17 +41,17 @@ int stack_init(Stack *stack) {
         return 1;
 }
 
-int stack_push(Stack *stack, TYPE val) {
+int stack_push(Stack *stack, Float val) {
     if (stack->len == MAX_SIZE) return 1;
     stack->array[stack->len++] = val;
     return 0;
 }
 
-TYPE stack_pop(Stack *stack) {
+Float stack_pop(Stack *stack) {
     return stack->len ? stack->array[--stack->len] : 0.0;
 }
 
-TYPE stack_get(Stack *stack, unsigned char i) {
+Float stack_get(Stack *stack, unsigned char i) {
     return i < stack->len ? stack->array[i] : 0.0;
 }
 
@@ -60,59 +70,40 @@ int stack_mul(Stack *stack) {
 }
 
 int stack_div(Stack *stack) {
-    TYPE a = stack_pop(stack), b = stack_pop(stack);
+    Float a = stack_pop(stack), b = stack_pop(stack);
     return stack_push(stack, b / a);
 }
 
 int stack_pow(Stack *stack) {
-    TYPE a = stack_pop(stack), b = stack_pop(stack);
-#ifdef USE_FLOAT
-    return stack_push(stack, powf(b, a));
-#else
-    return stack_push(stack, pow(b, a));
-#endif
+    Float a = stack_pop(stack), b = stack_pop(stack);
+    return stack_push(stack, pow_t(b, a));
 }
 
 int stack_sqrt(Stack *stack) {
-#ifdef USE_FLOAT
-    return stack_push(stack, sqrtf(stack_pop(stack)));
-#else
-    return stack_push(stack, sqrt(stack_pop(stack)));
-#endif
+    return stack_push(stack, sqrt_t(stack_pop(stack)));
 }
 
 int stack_neg(Stack *stack) {
-    TYPE val = stack_pop(stack);
+    Float val = stack_pop(stack);
     /* -0 workaround */
     return stack_push(stack, -(val != 0.0f) * val);
 }
 
-static TYPE floor_t(TYPE val) {
-#ifdef USE_FLOAT
-    return floorf(val);
-#else
-    return floor(val);
-#endif
-}
-
-static TYPE round_t(TYPE val) {
-    TYPE floor_val = floor_t(val), decimal = val - floor_val;
+static Float round_t(Float val) {
+    Float floor_val = floor_t(val), decimal = val - floor_val;
     return floor_val + (val >= 0.0f ? decimal >= 0.5f : decimal > 0.5f);
 }
 
 int stack_round(Stack *stack) {
-    TYPE digit = floor_t(stack_pop(stack)), val = stack_pop(stack);
-#ifdef USE_FLOAT
-    return stack_push(stack, round_t(val * powf(10, digit)) / powf(10, digit));
-#else
-    return stack_push(stack, round_t(val * pow(10, digit)) / pow(10, digit));
-#endif
+    Float digit = floor_t(stack_pop(stack)), val = stack_pop(stack);
+    return stack_push(stack,
+                      round_t(val * pow_t(10, digit)) / pow_t(10, digit));
 }
 
 /* TODO: use gamma function instead */
 int stack_fac(Stack *stack) {
     int i;
-    TYPE val = floor_t(stack_pop(stack)), sum = 1.;
+    Float val = floor_t(stack_pop(stack)), sum = 1.;
 
     if (val < 0) {
         stack_push(stack, 0. / 0.);
@@ -127,7 +118,7 @@ int stack_fac(Stack *stack) {
 void stack_rev(Stack *stack) {
     unsigned char i = 0, j = stack->len - 1;
     for (; i < stack->len / 2; i++, j--) {
-        TYPE temp = stack->array[i];
+        Float temp = stack->array[i];
         stack->array[i] = stack->array[j];
         stack->array[j] = temp;
     }
@@ -135,7 +126,7 @@ void stack_rev(Stack *stack) {
 
 /* for order, IEEE 754 compliance is assumed and any value < NAN = NAN */
 static int ord(const void *va, const void *vb) {
-    TYPE a = *(const TYPE *)va, b = *(const TYPE *)vb;
+    Float a = *(const Float *)va, b = *(const Float *)vb;
     if (a != a) /* is a NAN? */
         return b != b ? 0 : 1;
     else if (b != b || a < b)
@@ -146,5 +137,5 @@ static int ord(const void *va, const void *vb) {
 }
 
 void stack_sort(Stack *stack) {
-    qsort(stack->array, stack->len, sizeof(TYPE), ord);
+    qsort(stack->array, stack->len, sizeof(Float), ord);
 }

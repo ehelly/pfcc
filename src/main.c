@@ -105,7 +105,7 @@ int process(Stack *stack, char *input) {
         stack_push(stack,
                    stack->len > 0 ? stack_get(stack, stack->len - 1) : 0.);
     } else {
-        stack_push(stack, (TYPE)atof(input));
+        stack_push(stack, (Float)atof(input));
     }
     return 0;
 }

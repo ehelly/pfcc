@@ -24,23 +24,23 @@
 #endif
 
 #ifdef USE_FLOAT
-#define TYPE float
+typedef float Float;
 #else
-#define TYPE double
+typedef double Float;
 #endif
 
 #pragma GCC diagnostic ignored "-Wpadded"
 typedef struct Stack {
-    TYPE *array;
+    Float *array;
     unsigned char len;
 } Stack;
 
 int stack_init(Stack *stack);
 
-int stack_push(Stack *stack, TYPE val);
-TYPE stack_pop(Stack *stack);
+int stack_push(Stack *stack, Float val);
+Float stack_pop(Stack *stack);
 
-TYPE stack_get(Stack *stack, unsigned char i);
+Float stack_get(Stack *stack, unsigned char i);
 
 void stack_clear(Stack *stack);
 
