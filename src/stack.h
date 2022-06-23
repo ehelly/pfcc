@@ -53,6 +53,8 @@ int stack_sqrt(Stack *stack);
 
 int stack_neg(Stack *stack);
 
+int stack_round(Stack *stack);
+
 int stack_fac(Stack *stack);
 void stack_rev(Stack *stack);
 

@@ -87,14 +87,32 @@ int stack_neg(Stack *stack) {
     return stack_push(stack, -(val != 0.0f) * val);
 }
 
+static TYPE floor_t(TYPE val) {
+#ifdef USE_FLOAT
+    return floorf(val);
+#else
+    return floor(val);
+#endif
+}
+
+static TYPE round_t(TYPE val) {
+    TYPE floor_val = floor_t(val), decimal = val - floor_val;
+    return floor_val + (val >= 0.0f ? decimal >= 0.5f : decimal > 0.5f);
+}
+
+int stack_round(Stack *stack) {
+    TYPE digit = floor_t(stack_pop(stack)), val = stack_pop(stack);
+#ifdef USE_FLOAT
+    return stack_push(stack, round_t(val * powf(10, digit)) / powf(10, digit));
+#else
+    return stack_push(stack, round_t(val * pow(10, digit)) / pow(10, digit));
+#endif
+}
+
 /* TODO: use gamma function instead */
 int stack_fac(Stack *stack) {
     int i;
-#ifdef USE_FLOAT
-    TYPE val = floorf(stack_pop(stack)), sum = 1.;
-#else
-    TYPE val = floor(stack_pop(stack)), sum = 1.;
-#endif
+    TYPE val = floor_t(stack_pop(stack)), sum = 1.;
 
     if (val < 0) {
         stack_push(stack, 0. / 0.);

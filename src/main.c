@@ -89,6 +89,8 @@ int process(Stack *stack, char *input) {
         if (stack_sqrt(stack)) return 1;
     } else if (!strcmp(input, "neg")) {
         if (stack_neg(stack)) return 1;
+    } else if (!strcmp(input, "round")) {
+        if (stack_round(stack)) return 1;
     } else if (!strcmp(input, "!")) {
         if (stack_fac(stack)) return 1;
     } else if (!strcmp(input, "sort")) {
