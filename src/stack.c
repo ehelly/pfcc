@@ -26,9 +26,9 @@ int stack_init(Stack *stack) {
     if (ptr != NULL) {
         stack->array = ptr;
         stack->len = 0;
-        return 1;
-    } else
         return 0;
+    } else
+        return 1;
 }
 
 int stack_push(Stack *stack, double val) {

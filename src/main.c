@@ -53,21 +53,22 @@ int main() {
         if (strcmp(input, "q") == 0) {
             return 0;
         } else if (strcmp(input, "+") == 0) {
-            if (stack_add(&stack) == -1) return 1;
+            if (stack_add(&stack) == 1) return 1;
         } else if (strcmp(input, "-") == 0) {
-            if (stack_sub(&stack) == -1) return 1;
+            if (stack_sub(&stack) == 1) return 1;
         } else if (strcmp(input, "*") == 0) {
-            if (stack_mul(&stack) == -1) return 1;
+            if (stack_mul(&stack) == 1) return 1;
         } else if (strcmp(input, "/") == 0) {
-            if (stack_div(&stack) == -1) return 1;
+            if (stack_div(&stack) == 1) return 1;
         } else if (strcmp(input, "pow") == 0) {
-            if (stack_pow(&stack) == -1) return 1;
+            if (stack_pow(&stack) == 1) return 1;
         } else if (strcmp(input, "!") == 0) {
             stack_fac(&stack);
         } else if (strcmp(input, "sort") == 0) {
             stack_sort(&stack);
         } else if (strcmp(input, "warranty") == 0) {
             warranty();
+            free(input);
             continue;
         } else if (strcmp(input, "clear") == 0) {
             stack_clear(&stack);
