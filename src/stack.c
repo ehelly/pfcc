@@ -22,7 +22,7 @@
 #include <stdlib.h>
 
 int stack_init(Stack *stack) {
-    double *ptr = (double *)malloc(sizeof(double) * MAX_SIZE);
+    TYPE *ptr = (TYPE *)malloc(sizeof(TYPE) * MAX_SIZE);
     if (ptr != NULL) {
         stack->array = ptr;
         stack->len = 0;
@@ -31,17 +31,17 @@ int stack_init(Stack *stack) {
         return 1;
 }
 
-int stack_push(Stack *stack, double val) {
+int stack_push(Stack *stack, TYPE val) {
     if (stack->len == MAX_SIZE) return 1;
     stack->array[stack->len++] = val;
     return 0;
 }
 
-double stack_pop(Stack *stack) {
+TYPE stack_pop(Stack *stack) {
     return stack->len ? stack->array[--stack->len] : 0.0;
 }
 
-double stack_get(Stack *stack, unsigned char i) {
+TYPE stack_get(Stack *stack, unsigned char i) {
     return i < stack->len ? stack->array[i] : 0.0;
 }
 
@@ -60,19 +60,27 @@ int stack_mul(Stack *stack) {
 }
 
 int stack_div(Stack *stack) {
-    double a = stack_pop(stack), b = stack_pop(stack);
+    TYPE a = stack_pop(stack), b = stack_pop(stack);
     return stack_push(stack, b / a);
 }
 
 int stack_pow(Stack *stack) {
-    double a = stack_pop(stack), b = stack_pop(stack);
+    TYPE a = stack_pop(stack), b = stack_pop(stack);
+#ifdef USE_FLOAT
+    return stack_push(stack, powf(b, a));
+#else
     return stack_push(stack, pow(b, a));
+#endif
 }
 
 /* TODO: use gamma function instead */
 int stack_fac(Stack *stack) {
     int i;
-    double val = floor(stack_pop(stack)), sum = 1;
+#ifdef USE_FLOAT
+    TYPE val = floorf(stack_pop(stack)), sum = 1.;
+#else
+    TYPE val = floor(stack_pop(stack)), sum = 1.;
+#endif
 
     if (val < 0) {
         stack_push(stack, 0. / 0.);
@@ -87,7 +95,7 @@ int stack_fac(Stack *stack) {
 void stack_rev(Stack *stack) {
     unsigned char i = 0, j = stack->len - 1;
     for (; i < stack->len / 2; i++, j--) {
-        double temp = stack->array[i];
+        TYPE temp = stack->array[i];
         stack->array[i] = stack->array[j];
         stack->array[j] = temp;
     }
@@ -95,7 +103,7 @@ void stack_rev(Stack *stack) {
 
 /* for order, IEEE 754 compliance is assumed and any value < NAN = NAN */
 static int ord(const void *va, const void *vb) {
-    double a = *(const double *)va, b = *(const double *)vb;
+    TYPE a = *(const TYPE *)va, b = *(const TYPE *)vb;
     if (a != a) /* is a NAN? */
         return b != b ? 0 : 1;
     else if (b != b || a < b)
@@ -106,5 +114,5 @@ static int ord(const void *va, const void *vb) {
 }
 
 void stack_sort(Stack *stack) {
-    qsort(stack->array, stack->len, sizeof(double), ord);
+    qsort(stack->array, stack->len, sizeof(TYPE), ord);
 }

@@ -23,18 +23,24 @@
 #define MAX_SIZE 255
 #endif
 
+#ifdef USE_FLOAT
+#define TYPE float
+#else
+#define TYPE double
+#endif
+
 #pragma GCC diagnostic ignored "-Wpadded"
 typedef struct Stack {
-    double *array;
+    TYPE *array;
     unsigned char len;
 } Stack;
 
 int stack_init(Stack *stack);
 
-int stack_push(Stack *stack, double val);
-double stack_pop(Stack *stack);
+int stack_push(Stack *stack, TYPE val);
+TYPE stack_pop(Stack *stack);
 
-double stack_get(Stack *stack, unsigned char i);
+TYPE stack_get(Stack *stack, unsigned char i);
 
 void stack_clear(Stack *stack);
 

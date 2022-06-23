@@ -66,7 +66,7 @@ int main() {
             free(input);
             clear();
             for (i = 0; i < stack.len; i++) {
-                printf("%d: %f\n", i, stack_get(&stack, i));
+                printf("%d: %f\n", i, (double)stack_get(&stack, i));
             }
         }
     }
@@ -98,7 +98,7 @@ int process(Stack *stack, char *input) {
     } else if (!strlen(input)) {
         stack_push(stack, stack_get(stack, stack->len - 1));
     } else {
-        stack_push(stack, atof(input));
+        stack_push(stack, (TYPE)atof(input));
     }
     return 0;
 }
