@@ -96,7 +96,8 @@ int process(Stack *stack, char *input) {
     } else if (!strcmp(input, "drop")) {
         if (stack->len > 0) stack->len--;
     } else if (!strlen(input)) {
-        stack_push(stack, stack_get(stack, stack->len - 1));
+        stack_push(stack,
+                   stack->len > 0 ? stack_get(stack, stack->len - 1) : 0.);
     } else {
         stack_push(stack, (TYPE)atof(input));
     }
