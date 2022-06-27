@@ -48,6 +48,7 @@ int stack_add(Stack *stack);
 int stack_sub(Stack *stack);
 int stack_mul(Stack *stack);
 int stack_div(Stack *stack);
+int stack_mod(Stack *stack);
 int stack_pow(Stack *stack);
 int stack_sqrt(Stack *stack);
 

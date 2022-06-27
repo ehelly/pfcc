@@ -28,6 +28,7 @@
 
 #include "stack.h"
 
+#include <limits.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -72,6 +73,18 @@ int stack_mul(Stack *stack) {
 int stack_div(Stack *stack) {
     Float a = stack_pop(stack), b = stack_pop(stack);
     return stack_push(stack, b / a);
+}
+
+static int float_to_int(Float val) {
+    return val == val && (Float)INT_MIN - 1.0f < val &&
+                   val < (Float)INT_MAX + 1.0f
+               ? (int)val
+               : 0;
+}
+
+int stack_mod(Stack *stack) {
+    int a = float_to_int(stack_pop(stack)), b = float_to_int(stack_pop(stack));
+    return stack_push(stack, (Float)(b % a));
 }
 
 int stack_pow(Stack *stack) {

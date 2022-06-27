@@ -83,6 +83,8 @@ int process(Stack *stack, char *input) {
         if (stack_mul(stack)) return 1;
     } else if (!strcmp(input, "/")) {
         if (stack_div(stack)) return 1;
+    } else if (!strcmp(input, "%")) {
+        if (stack_mod(stack)) return 1;
     } else if (!strcmp(input, "pow")) {
         if (stack_pow(stack)) return 1;
     } else if (!strcmp(input, "sqrt")) {
