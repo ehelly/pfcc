@@ -65,7 +65,7 @@ int main() {
         } else {
             free(input);
             clear();
-            for (i = 0; i < stack.len; i++) {
+            for (i = 0; i < stack.top; i++) {
                 printf("%d: %g\n", i, (double)stack_get(&stack, i));
             }
         }
@@ -102,10 +102,9 @@ int process(Stack *stack, char *input) {
     } else if (!strcmp(input, "rev")) {
         stack_rev(stack);
     } else if (!strcmp(input, "drop")) {
-        if (stack->len > 0) stack->len--;
+        if (stack->top) stack->top--;
     } else if (!strlen(input)) {
-        stack_push(stack,
-                   stack->len > 0 ? stack_get(stack, stack->len - 1) : 0.);
+        stack_push(stack, stack->top ? stack_get(stack, stack->top - 1) : 0.);
     } else {
         stack_push(stack, (Float)atof(input));
     }

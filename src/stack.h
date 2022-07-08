@@ -19,8 +19,10 @@
 #ifndef STACK_H
 #define STACK_H
 
-#if !defined(MAX_SIZE) || MAX_SIZE > 255
-#define MAX_SIZE 255
+#include <limits.h>
+
+#if !defined(MAX_SIZE) || MAX_SIZE > UCHAR_MAX
+#define MAX_SIZE UCHAR_MAX
 #endif
 
 #ifdef USE_FLOAT
@@ -32,7 +34,7 @@ typedef double Float;
 #pragma GCC diagnostic ignored "-Wpadded"
 typedef struct Stack {
     Float *array;
-    unsigned char len;
+    unsigned char top;
 } Stack;
 
 int stack_init(Stack *stack);

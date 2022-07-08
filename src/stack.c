@@ -36,27 +36,27 @@ int stack_init(Stack *stack) {
     Float *ptr = (Float *)malloc(sizeof(Float) * MAX_SIZE);
     if (ptr != NULL) {
         stack->array = ptr;
-        stack->len = 0;
+        stack->top = 0;
         return 0;
     } else
         return 1;
 }
 
 int stack_push(Stack *stack, Float val) {
-    if (stack->len == MAX_SIZE) return 1;
-    stack->array[stack->len++] = val;
+    if (stack->top == MAX_SIZE) return 1;
+    stack->array[stack->top++] = val;
     return 0;
 }
 
 Float stack_pop(Stack *stack) {
-    return stack->len ? stack->array[--stack->len] : 0.0;
+    return stack->top ? stack->array[--stack->top] : 0.0;
 }
 
 Float stack_get(Stack *stack, unsigned char i) {
-    return i < stack->len ? stack->array[i] : 0.0;
+    return i < stack->top ? stack->array[i] : 0.0;
 }
 
-void stack_clear(Stack *stack) { stack->len = 0; }
+void stack_clear(Stack *stack) { stack->top = 0; }
 
 int stack_add(Stack *stack) {
     return stack_push(stack, stack_pop(stack) + stack_pop(stack));
@@ -129,8 +129,8 @@ int stack_fac(Stack *stack) {
 }
 
 void stack_rev(Stack *stack) {
-    unsigned char i = 0, j = stack->len - 1;
-    for (; i < stack->len / 2; i++, j--) {
+    unsigned char i = 0, j = stack->top - 1;
+    for (; i < stack->top / 2; i++, j--) {
         Float temp = stack->array[i];
         stack->array[i] = stack->array[j];
         stack->array[j] = temp;
@@ -150,5 +150,5 @@ static int ord(const void *va, const void *vb) {
 }
 
 void stack_sort(Stack *stack) {
-    qsort(stack->array, stack->len, sizeof(Float), ord);
+    qsort(stack->array, stack->top, sizeof(Float), ord);
 }
