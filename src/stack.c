@@ -52,7 +52,11 @@ int stack_add(Stack *stack) {
 }
 
 int stack_sub(Stack *stack) {
-    return stack_push(stack, -stack_pop(stack) + stack_pop(stack));
+    /* The commented line below should work, but for some reason it returns the
+    additive inverse on some systems.
+    return stack_push(stack, -stack_pop(stack) + stack_pop(stack)); */
+    double a = stack_pop(stack), b = stack_pop(stack);
+    return stack_push(stack, b - a);
 }
 
 int stack_mul(Stack *stack) {
