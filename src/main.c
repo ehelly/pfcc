@@ -36,7 +36,7 @@ int process(Stack *stack, char *input);
 
 int main() {
     Stack stack;
-    char input[255];
+    char input[256];
     unsigned char i;
 
     if (stack_init(&stack)) return 1;
@@ -50,7 +50,7 @@ int main() {
         "PARTICULAR\n"
         "PURPOSE. For details, type `warranty` and press return/enter.\n");
 
-    while (scanf("%255s", input) != 0) {
+    while (scanf("%255s", input) != EOF) {
         for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
         if (!strcmp(input, "warranty")) {
             warranty();
