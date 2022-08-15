@@ -25,24 +25,18 @@
 #define MAX_SIZE UCHAR_MAX
 #endif
 
-#ifdef USE_FLOAT
-typedef float Float;
-#else
-typedef double Float;
-#endif
-
 #pragma GCC diagnostic ignored "-Wpadded"
 typedef struct Stack {
-    Float *array;
+    double *array;
     unsigned char top;
 } Stack;
 
 int stack_init(Stack *stack);
 
-int stack_push(Stack *stack, Float val);
-Float stack_pop(Stack *stack);
+int stack_push(Stack *stack, double val);
+double stack_pop(Stack *stack);
 
-Float stack_get(Stack *stack, unsigned char i);
+double stack_get(Stack *stack, unsigned char i);
 
 void stack_clear(Stack *stack);
 

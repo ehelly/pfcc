@@ -16,16 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef USE_FLOAT
-#define floor_t(x) floorf(x)
-#define pow_t(x, y) powf(x, y)
-#define sqrt_t(x) sqrtf(x)
-#else
-#define floor_t(x) floor(x)
-#define pow_t(x, y) pow(x, y)
-#define sqrt_t(x) sqrt(x)
-#endif
-
 #include "stack.h"
 
 #include <limits.h>
@@ -33,7 +23,7 @@
 #include <stdlib.h>
 
 int stack_init(Stack *stack) {
-    Float *ptr = (Float *)malloc(sizeof(Float) * MAX_SIZE);
+    double *ptr = (double *)malloc(sizeof(double) * MAX_SIZE);
     if (ptr != NULL) {
         stack->array = ptr;
         stack->top = 0;
@@ -42,17 +32,17 @@ int stack_init(Stack *stack) {
         return 1;
 }
 
-int stack_push(Stack *stack, Float val) {
+int stack_push(Stack *stack, double val) {
     if (stack->top == MAX_SIZE) return 1;
     stack->array[stack->top++] = val;
     return 0;
 }
 
-Float stack_pop(Stack *stack) {
+double stack_pop(Stack *stack) {
     return stack->top ? stack->array[--stack->top] : 0.0;
 }
 
-Float stack_get(Stack *stack, unsigned char i) {
+double stack_get(Stack *stack, unsigned char i) {
     return i < stack->top ? stack->array[i] : 0.0;
 }
 
@@ -71,52 +61,51 @@ int stack_mul(Stack *stack) {
 }
 
 int stack_div(Stack *stack) {
-    Float a = stack_pop(stack), b = stack_pop(stack);
+    double a = stack_pop(stack), b = stack_pop(stack);
     return stack_push(stack, b / a);
 }
 
-static int float_to_int(Float val) {
-    return val == val && (Float)INT_MIN - 1.0f < val &&
-                   val < (Float)INT_MAX + 1.0f
+static int float_to_int(double val) {
+    return val == val && (double)INT_MIN - 1.0f < val &&
+                   val < (double)INT_MAX + 1.0f
                ? (int)val
                : 0;
 }
 
 int stack_mod(Stack *stack) {
     int a = float_to_int(stack_pop(stack)), b = float_to_int(stack_pop(stack));
-    return stack_push(stack, (Float)(b % a));
+    return stack_push(stack, (double)(b % a));
 }
 
 int stack_pow(Stack *stack) {
-    Float a = stack_pop(stack), b = stack_pop(stack);
-    return stack_push(stack, pow_t(b, a));
+    double a = stack_pop(stack), b = stack_pop(stack);
+    return stack_push(stack, pow(b, a));
 }
 
 int stack_sqrt(Stack *stack) {
-    return stack_push(stack, sqrt_t(stack_pop(stack)));
+    return stack_push(stack, sqrt(stack_pop(stack)));
 }
 
 int stack_neg(Stack *stack) {
-    Float val = stack_pop(stack);
+    double val = stack_pop(stack);
     /* -0 workaround */
     return stack_push(stack, -(val != 0.0f) * val);
 }
 
-static Float round_t(Float val) {
-    Float floor_val = floor_t(val), decimal = val - floor_val;
+static double round_t(double val) {
+    double floor_val = floor(val), decimal = val - floor_val;
     return floor_val + (val >= 0.0f ? decimal >= 0.5f : decimal > 0.5f);
 }
 
 int stack_round(Stack *stack) {
-    Float digit = floor_t(stack_pop(stack)), val = stack_pop(stack);
-    return stack_push(stack,
-                      round_t(val * pow_t(10, digit)) / pow_t(10, digit));
+    double digit = floor(stack_pop(stack)), val = stack_pop(stack);
+    return stack_push(stack, round_t(val * pow(10, digit)) / pow(10, digit));
 }
 
 /* TODO: use gamma function instead */
 int stack_fac(Stack *stack) {
     int i;
-    Float val = floor_t(stack_pop(stack)), sum = 1.;
+    double val = floor(stack_pop(stack)), sum = 1.;
 
     if (val < 0) {
         stack_push(stack, 0. / 0.);
@@ -131,7 +120,7 @@ int stack_fac(Stack *stack) {
 void stack_rev(Stack *stack) {
     unsigned char i = 0, j = stack->top - 1;
     for (; i < stack->top / 2; i++, j--) {
-        Float temp = stack->array[i];
+        double temp = stack->array[i];
         stack->array[i] = stack->array[j];
         stack->array[j] = temp;
     }
@@ -139,7 +128,7 @@ void stack_rev(Stack *stack) {
 
 /* for order, IEEE 754 compliance is assumed and any value < NAN = NAN */
 static int ord(const void *va, const void *vb) {
-    Float a = *(const Float *)va, b = *(const Float *)vb;
+    double a = *(const double *)va, b = *(const double *)vb;
     if (a != a) /* is a NAN? */
         return b != b ? 0 : 1;
     else if (b != b || a < b)
@@ -150,5 +139,5 @@ static int ord(const void *va, const void *vb) {
 }
 
 void stack_sort(Stack *stack) {
-    qsort(stack->array, stack->top, sizeof(Float), ord);
+    qsort(stack->array, stack->top, sizeof(double), ord);
 }

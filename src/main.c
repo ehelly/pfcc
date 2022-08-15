@@ -17,6 +17,7 @@
  */
 
 #ifdef SYSTEM_CLEAR
+#pragma GCC diagnostic ignored "-Wunused-result"
 #define clear() system("clear||cls")
 #else
 #define clear()
@@ -99,7 +100,7 @@ int process(Stack *stack, char *input) {
     } else if (!strlen(input)) {
         stack_push(stack, stack->top ? stack_get(stack, stack->top - 1) : 0.);
     } else {
-        stack_push(stack, (Float)atof(input));
+        stack_push(stack, atof(input));
     }
     return 0;
 }
