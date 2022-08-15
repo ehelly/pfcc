@@ -35,10 +35,12 @@ int process(Stack *stack, char *input);
 
 int main() {
     Stack stack;
+    char input[256];
+    unsigned char i;
+
     if (stack_init(&stack)) return 1;
 
     clear();
-
     printf(
         "pfcc Copyright (C) 2022 Eleanor Helly\n"
         "This is free software; see the source code for copying conditions. "
@@ -47,27 +49,18 @@ int main() {
         "PARTICULAR\n"
         "PURPOSE. For details, type `warranty` and press return/enter.\n");
 
-    while (1) {
-        char *input = NULL;
-        size_t len;
-        unsigned char i;
-
-        /* TODO: use scanf to allow multiple args, unknown command processing */
-        if (getline(&input, &len, stdin) == -1) return 1;
-        input[strcspn(input, "\r\n")] = 0; /* strip newline/carriage return */
+    while (scanf("%255s", input) != 0) {
         for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
-
         if (!strcmp(input, "warranty")) {
-            free(input);
             warranty();
         } else if (process(&stack, input)) {
             return 1;
         } else {
-            free(input);
             clear();
             for (i = 0; i < stack.top; i++) {
-                printf("%d: %g\n", i, (double)stack_get(&stack, i));
+                printf("%d: %g\n", i, stack_get(&stack, i));
             }
+            printf("\n");
         }
     }
 }
