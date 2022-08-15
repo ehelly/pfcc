@@ -63,10 +63,9 @@ int main(int argc, char *argv[]) {
     while (scanf("%255s", input) != EOF) {
         if (!strcmp(input, "warranty")) {
             warranty();
-        } else if (process(&stack, input)) {
-            return 1;
         } else {
             clear();
+            if (process(&stack, input)) return 1;
             print_stack(&stack);
             printf("\n");
         }
@@ -76,7 +75,7 @@ int main(int argc, char *argv[]) {
 void print_stack(Stack *stack) {
     unsigned char i;
     for (i = 0; i < stack->top; i++) {
-            printf("%d: %g\n", i, stack_get(stack, i));
+        printf("%d: %g\n", i, stack_get(stack, i));
     }
 }
 
@@ -116,7 +115,13 @@ int process(Stack *stack, char *input) {
     } else if (!strlen(input)) {
         stack_push(stack, stack->top ? stack_get(stack, stack->top - 1) : 0.);
     } else {
-        stack_push(stack, atof(input));
+        char *end;
+        double val = strtod(input, &end);
+        if (input == end || *end != '\0') {
+            printf("Unknown operation: %s.\n", input);
+        } else {
+            stack_push(stack, val);
+        }
     }
     return 0;
 }
