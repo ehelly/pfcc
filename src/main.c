@@ -30,43 +30,59 @@
 
 #include "stack.h"
 
+void print_stack(Stack *stack);
+int process(Stack *stack, char *input);
 void warranty(void);
 
-int process(Stack *stack, char *input);
-
-int main() {
+int main(int argc, char *argv[]) {
     Stack stack;
     char input[256];
     unsigned char i;
 
     if (stack_init(&stack)) return 1;
 
+    if (argc > 1) {
+        for (i = 1; i < argc; i++) {
+            if (process(&stack, argv[i])) return 1;
+        }
+        print_stack(&stack);
+        return 0;
+    }
+
     clear();
     printf(
         "pfcc Copyright (C) 2022 Eleanor Helly\n"
-        "This is free software; see the source code for copying conditions. "
+        "This is free software; see the source code for copying "
+        "conditions. "
         "There is\n"
-        "ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A "
+        "ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or FITNESS "
+        "FOR A "
         "PARTICULAR\n"
         "PURPOSE. For details, type `warranty` and press return/enter.\n");
 
     while (scanf("%255s", input) != EOF) {
-        for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
         if (!strcmp(input, "warranty")) {
             warranty();
         } else if (process(&stack, input)) {
             return 1;
         } else {
             clear();
-            for (i = 0; i < stack.top; i++) {
-                printf("%d: %g\n", i, stack_get(&stack, i));
-            }
+            print_stack(&stack);
             printf("\n");
         }
     }
 }
 
+void print_stack(Stack *stack) {
+    unsigned char i;
+    for (i = 0; i < stack->top; i++) {
+            printf("%d: %g\n", i, stack_get(stack, i));
+    }
+}
+
 int process(Stack *stack, char *input) {
+    unsigned char i;
+    for (i = 0; input[i]; i++) input[i] = (char)tolower(input[i]);
     if (!strcmp(input, "q")) {
         exit(0);
     } else if (!strcmp(input, "+")) {
@@ -110,16 +126,20 @@ void warranty() {
         "THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY\n"
         "APPLICABLE LAW.  EXCEPT WHEN OTHERWISE STATED IN WRITING THE "
         "COPYRIGHT\n"
-        "HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM \"AS IS\" WITHOUT "
+        "HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM \"AS IS\" "
+        "WITHOUT "
         "WARRANTY\n"
-        "OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED "
+        "OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT "
+        "LIMITED "
         "TO,\n");
     printf(
         "THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A "
         "PARTICULAR\n"
-        "PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE "
+        "PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF "
+        "THE "
         "PROGRAM\n"
-        "IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST "
+        "IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE "
+        "COST "
         "OF\n"
         "ALL NECESSARY SERVICING, REPAIR OR CORRECTION.\n");
 }
