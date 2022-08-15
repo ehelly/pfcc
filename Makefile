@@ -1,7 +1,7 @@
 all: main
 
 CC = gcc
-CFLAGS = -DSYSTEM_CLEAR -DMAX_SIZE=5 -ansi -Werror -Wextra -pedantic -pedantic-errors -Wno-unused-command-line-argument -lm
+CFLAGS = -DSYSTEM_CLEAR -DMAX_SIZE=10 -ansi -Werror -Wextra -pedantic -pedantic-errors -Wno-unused-command-line-argument -lm
 
 SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
 OBJS = $(SRCS:.c=.o)
