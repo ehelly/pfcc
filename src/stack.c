@@ -130,7 +130,7 @@ int stack_fac(Stack *stack) {
 
 void stack_rev(Stack *stack) {
     unsigned char i = 0, j = stack->top - 1;
-    for (; i < stack->top / 2; i++, j--) {
+    for(; i < stack->top / 2; i++, j--) {
         Float temp = stack->array[i];
         stack->array[i] = stack->array[j];
         stack->array[j] = temp;

@@ -1,0 +1,7 @@
+*.d
+*.d.*
+*.o
+*.gch
+.ccls-cache
+main
+main-debug
