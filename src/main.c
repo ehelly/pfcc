@@ -36,7 +36,7 @@ void warranty(void);
 
 int main(int argc, char *argv[]) {
     Stack stack;
-    char input[256];
+    char input[64];
     unsigned char i;
 
     if (stack_init(&stack)) return 1;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
         "PARTICULAR\n"
         "PURPOSE. For details, type `warranty` and press return/enter.\n");
 
-    while (scanf("%255s", input) != EOF) {
+    while (scanf("%64s", input) != EOF) {
         if (!strcmp(input, "warranty")) {
             warranty();
         } else {

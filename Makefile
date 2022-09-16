@@ -3,7 +3,7 @@ all: main
 CC = gcc
 CFLAGS = -DSYSTEM_CLEAR -DMAX_SIZE=10 -ansi -Werror -Wextra -pedantic -pedantic-errors -Wno-unused-command-line-argument -lm
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
+SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
 DEPS = $(SRCS:.c=.d)
 
@@ -13,7 +13,7 @@ DEPS = $(SRCS:.c=.d)
 	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$
 
-include $(DEPS)
+-include $(DEPS)
 
 main: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o "$@"
